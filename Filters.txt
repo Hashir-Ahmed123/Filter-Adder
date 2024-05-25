@@ -1,0 +1,70 @@
+GRAY filter with Blur:
+
+def apply_filter(frame):
+    # Convert the frame to grayscale
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # Apply a Gaussian blur to the grayscale frame
+    blurred_frame = cv2.GaussianBlur(gray_frame, (15, 15), 0)
+    return blurred_frame
+
+Edge Detection using Canny:
+
+def apply_filter(frame):
+    flipped_frame = cv2.flip(frame, 1) 
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray_frame, 100, 200)
+    return edges
+
+Sepia Effect:
+
+def apply_filter(frame):
+    # Create the sepia filter kernel
+    sepia_filter = cv2.transform(frame, np.matrix([[0.272, 0.534, 0.131],
+                                                   [0.349, 0.686, 0.168],
+                                                   [0.393, 0.769, 0.189]]))
+    # Clip the values to be in the correct range
+    sepia_frame = np.clip(sepia_filter, 0, 255)
+    return sepia_frame
+
+Invert Colors:
+
+def apply_filter(frame):
+    # Invert the colors of the frame
+    inverted_frame = cv2.bitwise_not(frame)
+    return inverted_frame
+
+Cartoon Effect:
+
+def apply_filter(frame):
+    # Convert to grayscale
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # Apply a median blur
+    gray_frame = cv2.medianBlur(gray_frame, 5)
+    # Detect edges
+    edges = cv2.adaptiveThreshold(gray_frame, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
+                                  cv2.THRESH_BINARY, 9, 9)
+    # Apply bilateral filter to the original color image
+    color = cv2.bilateralFilter(frame, 9, 300, 300)
+    # Combine the edges and the color image
+    cartoon = cv2.bitwise_and(color, color, mask=edges)
+    return cartoon
+
+Bilateral Filter:
+
+def apply_filter(frame):
+    flipped_frame = cv2.flip(frame, 1) 
+    bilateral_filtered_frame = cv2.bilateralFilter(flipped_frame, 9, 75, 75)
+    gray_frame = cv2.cvtColor(bilateral_filtered_frame, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray_frame, 100, 200)
+    return edges
+
+thermal vision:
+def apply_filter(frame):
+    flipped_frame = cv2.flip(frame, 1) 
+    bilateral_filtered_frame = cv2.bilateralFilter(flipped_frame, 9, 75, 75)
+    gray_frame = cv2.cvtColor(bilateral_filtered_frame, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray_frame, 100, 200)
+    thermal_frame = cv2.applyColorMap(edges, cv2.COLORMAP_JET)
+    return thermal_frame
+
+    
